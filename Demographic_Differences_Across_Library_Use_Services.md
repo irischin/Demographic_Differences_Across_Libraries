@@ -34,7 +34,7 @@ Here, we'll look at number of annual visits per capita (i.e., based on the popul
 lib_2012_visits<-lib_2012s %>%
   mutate(Visits_prop=VISITS/POPU_UND) %>%
   filter(Majority_demo!="NH_Asian") %>%
-  mutate(Majority_demo=factor(Majority_demo, labels=c("Hispanic", "White, Non-Hispanic", "Black, Non-Hispanic"))) %>%
+  mutate(Majority_demo=factor(Majority_demo, labels=c("Hispanic", "Black, Non-Hispanic", "White, Non-Hispanic"))) %>%
   select(Visits_prop, Majority_demo)
 ```
 
@@ -60,11 +60,11 @@ with(lib_2012_visits, dunn.test(Visits_prop, Majority_demo, kw=F, method="bonfer
     ## Col Mean-|
     ## Row Mean |   Black, N   Hispanic
     ## ---------+----------------------
-    ## Hispanic |   6.810700
-    ##          |     0.0000
+    ## Hispanic |   2.918644
+    ##          |     0.0053
     ##          |
-    ## White, N |   2.857848  -2.918644
-    ##          |     0.0064     0.0053
+    ## White, N |  -2.857848  -6.810700
+    ##          |     0.0064     0.0000
 
 From this, we can see that the three communities differed significantly from each other, with libraries in White, Non-Hispanic majority communities having the highest mean rank of annual visits per capita (*M* = 270.31), followed by libraries in Black, Non-Hispanic majority communities (*M* = 215.03), and finally libraries in Hispanic majority communities (*M* = 142.76).
 
@@ -74,7 +74,7 @@ We can then look at the number of annual registered users per capita:
 lib_2012_reg<-lib_2012s %>%
   mutate(Reg_prop=REGBOR/POPU_UND) %>%
   filter(Majority_demo!="NH_Asian") %>%
-  mutate(Majority_demo=factor(Majority_demo, labels=c("Hispanic", "White, Non-Hispanic", "Black, Non-Hispanic"))) %>%
+  mutate(Majority_demo=factor(Majority_demo, labels=c("Hispanic", "Black, Non-Hispanic", "White, Non-Hispanic"))) %>%
   select(Reg_prop, Majority_demo)
 ```
 
@@ -100,11 +100,11 @@ with(lib_2012_reg, dunn.test(Reg_prop, Majority_demo, kw=F, method="bonferroni")
     ## Col Mean-|
     ## Row Mean |   Black, N   Hispanic
     ## ---------+----------------------
-    ## Hispanic |   4.241641
-    ##          |     0.0000
+    ## Hispanic |   1.864747
+    ##          |     0.0933
     ##          |
-    ## White, N |   1.719618  -1.864747
-    ##          |     0.1283     0.0933
+    ## White, N |  -1.719618  -4.241641
+    ##          |     0.1283     0.0000
 
 We can also graph both annual visits and annual registered users: <img src="Demographic_Differences_Across_Library_Use_Services_files/figure-markdown_github/Annual Visits and Registered Users Graph-1.png" style="display: block; margin: auto;" />
 
@@ -120,7 +120,7 @@ lib_2012_collection<-lib_2012s %>%
   select(POPU_UND, BKVOL, EBOOK, AUDIO_PH, AUDIO_DL, VIDEO_PH, VIDEO_DL, DATABASE, Majority_demo) %>%
   mutate_each(funs(replace(., .<0, NA))) %>%
   filter(Majority_demo!="NH_Asian") %>%
-  mutate(Majority_demo=factor(Majority_demo, labels=c("Hispanic", "White, Non-Hispanic", "Black, Non-Hispanic"))) %>%
+  mutate(Majority_demo=factor(Majority_demo, labels=c("Hispanic", "Black, Non-Hispanic", "White, Non-Hispanic"))) %>%
   mutate(Books=BKVOL/POPU_UND, Ebooks=EBOOK/POPU_UND,
          Audio_PH=AUDIO_PH/POPU_UND, Audio_DL=AUDIO_DL/POPU_UND,
          Video_PH=VIDEO_PH/POPU_UND, Video_DL=VIDEO_DL/POPU_UND,
@@ -150,10 +150,10 @@ with(lib_2012_collection, dunn.test(Books, Majority_demo, kw=F, method="bonferro
     ## Col Mean-|
     ## Row Mean |   Black, N   Hispanic
     ## ---------+----------------------
-    ## Hispanic |   7.130240
+    ## Hispanic |   4.716083
     ##          |     0.0000
     ##          |
-    ## White, N |   0.887732  -4.716083
+    ## White, N |  -0.887732  -7.130240
     ##          |     0.5620     0.0000
 
 ``` r
@@ -176,11 +176,11 @@ with(lib_2012_collection, dunn.test(Ebooks, Majority_demo, kw=F, method="bonferr
     ## Col Mean-|
     ## Row Mean |   Black, N   Hispanic
     ## ---------+----------------------
-    ## Hispanic |   5.448579
-    ##          |     0.0000
+    ## Hispanic |   1.740156
+    ##          |     0.1227
     ##          |
-    ## White, N |   3.047696  -1.740156
-    ##          |     0.0035     0.1227
+    ## White, N |  -3.047696  -5.448579
+    ##          |     0.0035     0.0000
 
 ``` r
 kruskal.test((Audio_PH+Video_PH)~Majority_demo, lib_2012_collection)
@@ -202,11 +202,11 @@ with(lib_2012_collection, dunn.test((Audio_PH+Video_PH), Majority_demo, kw=F, me
     ## Col Mean-|
     ## Row Mean |   Black, N   Hispanic
     ## ---------+----------------------
-    ## Hispanic |   7.170600
-    ##          |     0.0000
+    ## Hispanic |   2.878578
+    ##          |     0.0060
     ##          |
-    ## White, N |   3.287824  -2.878578
-    ##          |     0.0015     0.0060
+    ## White, N |  -3.287824  -7.170600
+    ##          |     0.0015     0.0000
 
 ``` r
 kruskal.test((Audio_DL+Video_DL)~Majority_demo, lib_2012_collection)
@@ -228,11 +228,11 @@ with(lib_2012_collection, dunn.test((Audio_DL+Video_DL), Majority_demo, kw=F, me
     ## Col Mean-|
     ## Row Mean |   Black, N   Hispanic
     ## ---------+----------------------
-    ## Hispanic |   5.252381
-    ##          |     0.0000
+    ## Hispanic |   1.136040
+    ##          |     0.3839
     ##          |
-    ## White, N |   3.708689  -1.136040
-    ##          |     0.0003     0.3839
+    ## White, N |  -3.708689  -5.252381
+    ##          |     0.0003     0.0000
 
 With physical print materials, libraries in communities with majority Hispanic members (*M* = 136.76) had a significantly lower mean rank of physical print materials compared to libraries in communities with majority Black (*M* = 248.44) and with majority White (*M* = 265.58) members.
 
@@ -253,7 +253,7 @@ For this, we'll look at (1) total annual circulation transactions, (2) total aud
 lib_2012_services<-lib_2012s %>%
   mutate(Cir=TOTCIR/VISITS, Prog_attend=TOTATTEN/VISITS, Reference=REFERENC/VISITS, Pub_Internet=PITUSR/VISITS) %>%
   filter(Majority_demo!="NH_Asian") %>%
-  mutate(Majority_demo=factor(Majority_demo, labels=c("Hispanic", "White, Non-Hispanic", "Black, Non-Hispanic"))) %>%
+  mutate(Majority_demo=factor(Majority_demo, labels=c("Hispanic", "Black, Non-Hispanic", "White, Non-Hispanic"))) %>%
   select(Majority_demo, Cir, Prog_attend, Reference, Pub_Internet) 
 
 #to compare total annual circulation transactions across communities
@@ -276,11 +276,11 @@ with(lib_2012_services, dunn.test(Cir, Majority_demo, kw=F, method="bonferroni")
     ## Col Mean-|
     ## Row Mean |   Black, N   Hispanic
     ## ---------+----------------------
-    ## Hispanic |   5.905124
-    ##          |     0.0000
+    ## Hispanic |   0.802374
+    ##          |     0.6335
     ##          |
-    ## White, N |   4.690266  -0.802374
-    ##          |     0.0000     0.6335
+    ## White, N |  -4.690266  -5.905124
+    ##          |     0.0000     0.0000
 
 ``` r
 #to compare total program attendance across communities
@@ -314,11 +314,11 @@ with(lib_2012_services, dunn.test(Reference, Majority_demo, kw=F, method="bonfer
     ## Col Mean-|
     ## Row Mean |   Black, N   Hispanic
     ## ---------+----------------------
-    ## Hispanic |  -1.635520
-    ##          |     0.1529
+    ## Hispanic |   2.470890
+    ##          |     0.0202
     ##          |
-    ## White, N |  -4.746735  -2.470890
-    ##          |     0.0000     0.0202
+    ## White, N |   4.746735   1.635520
+    ##          |     0.0000     0.1529
 
 ``` r
 #to compare total uses of public internet computers across communities
@@ -341,11 +341,11 @@ with(lib_2012_services, dunn.test(Pub_Internet, Majority_demo, kw=F, method="bon
     ## Col Mean-|
     ## Row Mean |   Black, N   Hispanic
     ## ---------+----------------------
-    ## Hispanic |  -4.132601
-    ##          |     0.0001
+    ## Hispanic |   0.344580
+    ##          |     1.0000
     ##          |
-    ## White, N |  -4.442389  -0.344580
-    ##          |     0.0000     1.0000
+    ## White, N |   4.442389   4.132601
+    ##          |     0.0000     0.0001
 
 Libraries located in communities with a majority of White members had a higher mean rank in the number of circulation transactions (*M* = 272.51) than those located in communities with a majority of Black members (*M* = 181.79) and Hispanic members (*M* = 161.93). With regards to the number of reference transactions, libraries located in communities with majority Black members (*M* = 321.25) had higher mean rank than those located in communities with a majority of White (*M* = 229.45) and Hispanic (*M* = 260.07) members. With regards to use of public internet computers, communities with a majority of Hispanic (*M* = 301.10) and Black (*M* = 309.63) had higher mean ranks than those located in communities with a majority of White members (*M* = 223.71). Finally, program attendance did not differ across the three different communities.
 
