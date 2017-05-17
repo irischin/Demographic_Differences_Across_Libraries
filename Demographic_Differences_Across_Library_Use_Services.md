@@ -3,9 +3,9 @@ Community Differences in Library Use and Services
 
 Here I'll be detailing the analyses I performed to investigate how a library's services can differ depending on its surrounding community's demographic makeup as well as how different demographic communities might vary in their use of library resources. For this particular set of analyses, I'll be focusing on libraries located in cities; follow-up work will be done on libraries located in other locales (e.g., rural areas, suburbs, etc.).
 
-To generate the approprate dataset needed for the following analyses, I used information spread across four datasets: (1) **The Public Library Survey** collected for the year 2012 that provides information about libraries' services, collections, etc.; (2) **US 2010 Decennial Census data**; (3) List of **zip codes and the corresponding Zip Code Tabulation Area (ZCTA)**; (4) List of **Zip Code Tabulation Areas (ZCTA) and their corresponding longitudinal and latitude information**. For more information on each of those datasets and how I created the dataset for the current analyses, please see the `Creating_dataset` R-markdown file.
+To generate the appropriate dataset needed for the following analyses, I used information spread across four datasets: (1) **The Public Library Survey** collected for the year 2012 that provides information about libraries' services, collections, etc.; (2) **US 2010 Decennial Census data**; (3) List of **zip codes and the corresponding Zip Code Tabulation Area (ZCTA)**; (4) List of **Zip Code Tabulation Areas (ZCTA) and their corresponding longitudinal and latitude information**. For more information on each of those datasets and how I created the dataset for the current analyses, please see the `Creating_dataset` R-markdown file.
 
-In short, the dataset that I created involves the original Public Library Survey 2012 dataset combined with information about which is the majority race/ethnicity of the community surrounding each library. "Community" here is defined as any area that falls within a 2 mile radius of a library. This is not to say that libraries only service the population that is located within a 2 mile radius. However, a cut-off was needed and 2 miles did not appear to be completely unreasonable given that in cities, libraries are typically more clustered in comparison to libraries located in other locales (e.g., rural areas). Suggestions for what may be a better cut-off is welcomed!
+In short, the dataset that I created involves the original Public Library Survey 2012 dataset combined with information about the majority race/ethnicity of the community surrounding each library. "Community" here is defined as any area that falls within a 2 mile radius of a library. This is not to say that libraries only service the population that is located within a 2 mile radius. However, a cut-off was needed and 2 miles did not appear to be completely unreasonable given that in cities, libraries are typically more clustered in comparison to libraries located in other locales (e.g., rural areas). Suggestions for what may be a better cut-off is welcomed!
 
 First to load all the necessary packages:
 
@@ -28,7 +28,7 @@ lib_2012s<-read.table("lib_2012_and_demo.txt", sep="\t", header=T)
 Do the total number of annual visits and registered users differ by the demographic of a library's community?
 =============================================================================================================
 
-Here, we'll look at number of annual visits per capita (e.g., based on the population of legal service area).
+Here, we'll look at number of annual visits per capita (i.e., based on the population of legal service area).
 
 ``` r
 lib_2012_visits<-lib_2012s %>%
@@ -78,7 +78,7 @@ lib_2012_reg<-lib_2012s %>%
   select(Reg_prop, Majority_demo)
 ```
 
-Again, using the Kruskal Wallis Test, we find that the communities differ signficantly in their number of annual registered users per capita. However, a pattern slightly different from the annual visits emerged here. Libraries in communities with a Hispanic majority (*M* = 181.37) differed significantly from libraries in communities with a White majority (*M* = 260.80) in their mean rank of annual registered users per capita. However, libaries in Hispanic and Black majority communities (*M* = 227.54) did not differ significantly; Libaries in Black majority communities also did not differ significantly from those in White majority communities.
+Again, using the Kruskal Wallis Test, we find that the communities differ significantly in their number of annual registered users per capita. However, a pattern slightly different from the annual visits emerged here. Libraries in communities with a Hispanic majority (*M* = 181.37) differed significantly from libraries in communities with a White majority (*M* = 260.80) in their mean rank of annual registered users per capita. However, libraries in Hispanic and Black majority communities (*M* = 227.54) did not differ significantly; Libraries in Black majority communities also did not differ significantly from those in White majority communities.
 
 ``` r
 kruskal.test(Reg_prop~Majority_demo, lib_2012_reg)
@@ -128,7 +128,7 @@ lib_2012_collection<-lib_2012s %>%
   select(Books, Ebooks, Audio_PH, Audio_DL,  Video_PH, Video_DL, Database, Majority_demo)
 ```
 
-Given our dataset and questions, a MANOVA might be the statistical test to use. However, violations of some assumptions (e.g., lack of linear relationship between DVs within each IVs, unequal variances, etc.), performing a MANOVA is not actually appropriate here. Thus, I ended up running multiple Kruskal-Wallis tests instead. However, instead of running six individual tests, I collapsed Audio and Video (physical) collections into one category and Audio and Video (digital) collections into another category. Additionally, because I ran four Kruskal-Wallis tests, I used the adjusted alpha of 0.0125.
+Given our dataset and questions, a MANOVA might be the statistical test to use. However, because some assumptions were violated here (e.g., lack of linear relationship between DVs within each IV, unequal variances, etc.), performing a MANOVA is not actually appropriate. Thus, I ended up running multiple Kruskal-Wallis tests instead. However, instead of running six individual tests, I collapsed Audio and Video (physical) collections into one category and Audio and Video (digital) collections into another category. Additionally, because I ran four Kruskal-Wallis tests, I used the adjusted alpha of 0.0125.
 
 ``` r
 kruskal.test(Books~Majority_demo, lib_2012_collection)
@@ -240,14 +240,14 @@ With Ebooks, libraries in communities with majority White members (*M* = 267.23)
 
 With physical audio and video content, communities differed significantly from each other. Libraries in communities with majority White members (*M* = 271.65) had the highest mean rank of such content, followed by libraries in communities with majority Black members (*M* = 208.19), then libraries in communities with majority Hispanic members (*M* = 142.00).
 
-With digital audio and video content, libraries in communities with majority White members (*M* = 264.53) had a sigificantly higher mean rank of such content than libraries in communities with majority Black (*M* = 200.14) and with majority Hispanic members (*M* = 187.04).
+With digital audio and video content, libraries in communities with majority White members (*M* = 264.53) had a significantly higher mean rank of such content than libraries in communities with majority Black (*M* = 200.14) and with majority Hispanic members (*M* = 187.04).
 
 We can also graph this: <img src="Demographic_Differences_Across_Library_Use_Services_files/figure-markdown_github/Collections graph-1.png" style="display: block; margin: auto;" />
 
 Do the library services used by members of a community differ depending on its demographics?
 ============================================================================================
 
-For this, we'll look at (1) total annual circulation transactions, (2) total audience at programs, (3) total reference transactions, and (4) total uses of public internet computers. To take into account the differing sizes of libraries, we'll look at these variables per the total annual number of visits.
+For this, we'll look at (1) total annual circulation transactions, (2) total audience at programs, (3) total reference transactions, and (4) total uses of public internet computers. To take into account the differing sizes of libraries, we'll look at these variables out of the total annual number of visits.
 
 ``` r
 lib_2012_services<-lib_2012s %>%
@@ -283,7 +283,7 @@ with(lib_2012_services, dunn.test(Cir, Majority_demo, kw=F, method="bonferroni")
     ##          |     0.0000     0.6335
 
 ``` r
-#to compare total program attendence across communities
+#to compare total program attendance across communities
 kruskal.test(Prog_attend~Majority_demo, lib_2012_services)
 ```
 
@@ -347,6 +347,6 @@ with(lib_2012_services, dunn.test(Pub_Internet, Majority_demo, kw=F, method="bon
     ## White, N |  -4.442389  -0.344580
     ##          |     0.0000     1.0000
 
-Libraries located in communities with a majority of White members had a higher mean rank in the number of circulation transactions (*M* = 272.51) than those located in communities with a majority of Black members (*M* = 181.79) and Hispanic members (*M* = 161.93). With regards to the number of reference transactions, libraries located in communities with majority Black members (*M* = 321.25) had higher mean rank than those located in communities with a majority of White (*M* = 229.45) and Hispanic (*M* = 260.07) members. With regards to use of public internet computers, communities with a majority of Hispanic (*M* = 301.10) and Black (*M* = 309.63) had higher mean ranks than those located in communities with a majority of White memberes (*M* = 223.71). Fially, program attendence did not differ across the three different communities.
+Libraries located in communities with a majority of White members had a higher mean rank in the number of circulation transactions (*M* = 272.51) than those located in communities with a majority of Black members (*M* = 181.79) and Hispanic members (*M* = 161.93). With regards to the number of reference transactions, libraries located in communities with majority Black members (*M* = 321.25) had higher mean rank than those located in communities with a majority of White (*M* = 229.45) and Hispanic (*M* = 260.07) members. With regards to use of public internet computers, communities with a majority of Hispanic (*M* = 301.10) and Black (*M* = 309.63) had higher mean ranks than those located in communities with a majority of White members (*M* = 223.71). Finally, program attendance did not differ across the three different communities.
 
 To graph this: <img src="Demographic_Differences_Across_Library_Use_Services_files/figure-markdown_github/Services graph-1.png" style="display: block; margin: auto;" />
