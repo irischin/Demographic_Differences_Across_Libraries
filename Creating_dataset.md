@@ -15,7 +15,6 @@ First to load packages that we'll be using:
 library(geosphere)
 ```
 
-    ## Loading required package: sp
 
 Now we can import the four different datasets we'll be using. First is the Public Library Survey for 2012. I've also subsetted the data so that it includes only libraries that are located in a city. This is indicated under the `LOCALE` column, with values 11-13 corresponding to a city.
 
