@@ -5,7 +5,7 @@ Here I'll be detailing the analyses I performed to investigate how a library's s
 
 To generate the appropriate dataset needed for the following analyses, I used information spread across four datasets: (1) **The Public Library Survey** collected for the year 2012 that provides information about libraries' services, collections, etc.; (2) **US 2010 Decennial Census data**; (3) List of **zip codes and the corresponding Zip Code Tabulation Area (ZCTA)**; (4) List of **Zip Code Tabulation Areas (ZCTA) and their corresponding longitudinal and latitude information**. For more information on each of those datasets and how I created the dataset for the current analyses, please see the `Creating_dataset` R-markdown file.
 
-In short, the dataset that I created involves the original Public Library Survey 2012 dataset combined with information about the majority race/ethnicity of the community surrounding each library. "Community" here is defined as any area that falls within a 2 mile radius of a library. This is not to say that libraries only service the population that is located within a 2 mile radius. However, a cut-off was needed and 2 miles did not appear to be completely unreasonable given that in cities, libraries are typically more clustered in comparison to libraries located in other locales (e.g., rural areas). Suggestions for what may be a better cut-off is welcomed!
+In short, the dataset that I created involved the original Public Library Survey 2012 dataset combined with information about the majority race/ethnicity of the community surrounding each library. A library's "community" here was defined as any area that fell within a 2 mile radius of a library. This is not to say that libraries only service the population that is located within a 2 mile radius. However, a cut-off was needed and 2 miles did not appear to be completely unreasonable given that in cities, libraries are typically more clustered in comparison to libraries located in other locales (e.g., rural areas). Suggestions for what may be a better cut-off is welcomed!
 
 First to load all the necessary packages:
 
@@ -113,7 +113,7 @@ Does the library's collection vary by the demographic of a library's community?
 
 Additionally, given the rise of digital content, a question of interest might be whether libraries provide similar amount of digital content across communities?
 
-To account for different sizes of the libraries, we'll look at the size of different collection types per capita.
+To account for different sizes of libraries, we'll look at the size of different collection types per capita.
 
 ``` r
 lib_2012_collection<-lib_2012s %>%
@@ -128,7 +128,7 @@ lib_2012_collection<-lib_2012s %>%
   select(Books, Ebooks, Audio_PH, Audio_DL,  Video_PH, Video_DL, Database, Majority_demo)
 ```
 
-Given our dataset and questions, a MANOVA might be the statistical test to use. However, because some assumptions were violated here (e.g., lack of linear relationship between DVs within each IV, unequal variances, etc.), performing a MANOVA is not actually appropriate. Thus, I ended up running multiple Kruskal-Wallis tests instead. However, instead of running six individual tests, I collapsed Audio and Video (physical) collections into one category and Audio and Video (digital) collections into another category. Additionally, because I ran four Kruskal-Wallis tests, I used the adjusted alpha of 0.0125.
+Given our dataset and questions, a MANOVA might be the statistical test to use. However, because some assumptions were again violated here (e.g., lack of linear relationship between DVs within each IV, unequal variances, etc.), performing a MANOVA is not actually appropriate. Thus, I ended up running multiple Kruskal-Wallis tests instead. However, instead of running six individual tests, I collapsed Audio and Video (physical) collections into one category and Audio and Video (digital) collections into another category. Additionally, because I ran four Kruskal-Wallis tests, I used the adjusted alpha of 0.0125.
 
 ``` r
 kruskal.test(Books~Majority_demo, lib_2012_collection)
@@ -247,7 +247,7 @@ We can also graph this: <img src="Demographic_Differences_Across_Library_Use_Ser
 Do the library services used by members of a community differ depending on its demographics?
 ============================================================================================
 
-For this, we'll look at (1) total annual circulation transactions, (2) total audience at programs, (3) total reference transactions, and (4) total uses of public internet computers. To take into account the differing sizes of libraries, we'll look at these variables out of the total annual number of visits.
+For this, we'll look at (1) total annual circulation transactions, (2) total audience at programs, (3) total reference transactions, and (4) total use of public internet computers. To take into account the differing sizes of libraries, we'll look at these variables out of the total annual number of visits.
 
 ``` r
 lib_2012_services<-lib_2012s %>%
