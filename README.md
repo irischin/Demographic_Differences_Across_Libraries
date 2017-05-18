@@ -12,3 +12,5 @@ This directory contains the code for my analyses on potential differences in a) 
 | Demographic\_Differences\_Across\_Library\_Use\_Services.md | Markdown file with details on the different analyses I performed to investigate the questions regarding demographic differences in library use and services |
 
 All code was written in R.
+
+For a more detailed write up of the analyses, please visit: <https://irischinresearch.wordpress.com/2017/05/18/demographic-differences-in-library-use-and-services/>
